@@ -10,3 +10,6 @@
 .idea/workspace.xml
 src/main/resources/
 target/
+.idea/dataSources.local.xml
+.idea/dataSources/26b5ca6b-58d6-418d-9e82-f2e6826985b7/_src_/
+.idea/dataSources/26b5ca6b-58d6-418d-9e82-f2e6826985b7/_staging_/
