@@ -16,9 +16,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = dbf.newDocumentBuilder();
-        Document document = builder.parse(new File("src/Main/java/September2017.Date_29_09_17/Order.xml"));
+        Document document = builder.parse(new File("src/Main/ural/September2017.Date_29_09_17/Order.xml"));
 //        parseXML(document);
-        createXML("src/Main/java/September2017.Date_29_09_17/newOrder.xml");
+        createXML("src/Main/ural/September2017.Date_29_09_17/newOrder.xml");
     }
 
     public static void parseXML(Node document) {

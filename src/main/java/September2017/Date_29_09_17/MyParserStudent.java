@@ -20,7 +20,7 @@ import java.util.Date;
 public class MyParserStudent {
     public static void main(String[] args) throws Exception {
         Student s01 = new Student((short) 1, "Иван", "Иванович", "Иванов", Date.parse("1994/07/07"));
-        createXML("src/Main/java/September2017.Date_29_09_17/result.xml", s01);
+        createXML("src/Main/ural/September2017.Date_29_09_17/result.xml", s01);
     }
 
     public static void createXML(String fileName, Student student) throws Exception {

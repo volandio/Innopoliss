@@ -12,16 +12,16 @@ import java.util.regex.Pattern;
 
 class Parser {
     private String[] array;
-    private int result;
     private volatile boolean isActive = true;
+    List<Integer> resultList = new ArrayList<>();
 
     Parser(String[] array) {
         this.array = array;
     }
 
     private synchronized void sumAndPrint(int temp) {
-        result += temp;
-        System.out.println(result);
+        resultList.add(temp);
+        System.out.println(resultList.stream().mapToInt(a -> a).sum());
     }
 
     private void stopWork() {
@@ -32,35 +32,26 @@ class Parser {
         Pattern pattern = Pattern.compile("[-]?\\d+");
         List<Thread> threads = new ArrayList<>();
         for (String str : array) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (isActive) {
-                        StringBuilder tempSB = new StringBuilder();
-                        try (BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(new FileInputStream(str), StandardCharsets.UTF_8))) {
-                            String line;
-                            while ((line = reader.readLine()) != null) {
-                                tempSB.append(line).append(" ");
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
+            Thread thread = new Thread(() -> {
+                while (isActive) {
+                    StringBuilder tempSB = new StringBuilder();
+                    try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(new FileInputStream(str), StandardCharsets.UTF_8))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            tempSB.append(line).append(" ");
                         }
-
-                        if (!tempSB.toString().matches("([-]?\\d+\\s?)")) {
-//                            System.out.println("BAD FILE");
-//                                stopWork();
-                        }
-
-                        Matcher matcher = pattern.matcher(tempSB.toString());
-                        while (matcher.find()) {
-                            int tempInt = Integer.valueOf(matcher.group());
-                            if (tempInt > 0 && tempInt % 2 == 0) {
-                                sumAndPrint(tempInt);
-                            }
-                        }
-                        return;
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                    Matcher matcher = pattern.matcher(tempSB.toString());
+                    while (matcher.find()) {
+                        int tempInt = Integer.valueOf(matcher.group());
+                        if (tempInt > 0 && tempInt % 2 == 0) {
+                            sumAndPrint(tempInt);
+                        }
+                    }
+                    return;
                 }
             });
             threads.add(thread);
@@ -71,7 +62,7 @@ class Parser {
         if (!isActive) {
             System.out.println("Имеются файлы с неподходящими данными! Результат суммы не верен!");
         }
-        return result;
+        return resultList.stream().mapToInt(a -> a).sum();
     }
 }
 
